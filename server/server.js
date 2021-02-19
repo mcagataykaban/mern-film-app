@@ -1,12 +1,13 @@
 const mongoose = require('mongoose')
 const express = require('express')
+var cors = require('cors')
 const app = express()
 const port = 4000
 var bodyParser = require('body-parser')
 const { forEach } = require('methods')
 
 app.use(bodyParser.urlencoded({extended: false}))
-
+app.use(cors())
 app.use(bodyParser.json())
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
 
@@ -20,7 +21,8 @@ const filmSchema = new Schema({
     name: String,
     categories: [],
     minutes: Number,
-    publishedYear : Number
+    publishedYear : Number,
+    rate: Number
 })
 
 const film = mongoose.model('film', filmSchema)
@@ -82,14 +84,19 @@ app.get('/film/:id', (req, res) => {
 
 
 
-
+//   film.findById('602ed29f2120f40fc2cdaac5', (err,doc) => {
+//     doc.rate = 4.0
+//     doc.minutes = 126
+//     doc.save()
+// })
 
 
 
 // var newFilm = new film({
 //     name: 'Spider-man Home Coming',
 //     publishedDate: 2017,
-//     minutes: 133
+//     minutes: 133,
+
 // })
 // newFilm.save()
 
