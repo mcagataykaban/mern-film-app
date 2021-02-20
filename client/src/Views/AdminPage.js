@@ -7,19 +7,24 @@ const AdminPage = (props) => {
   const text = "Are you sure to delete this task?";
 
   function confirm(id) {
+      
     console.log(id);
-    fetch(`http://localhost:4000/deleteFilm/${id}`, {
+    fetch('http://localhost:4000/deleteFilm', {
       method: "POST",
+      body: JSON.stringify({ _id : id}),
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
     })
-      .then((resp) => {
-        if (resp.ok) {
-          props.setFilms(
-            _.remove(props.films, function(n) {
-              return n._id !== id;
-            })
-          );
-          message.info("Film deleted");
-        }
+      .then((res) => {res.json()})
+      .then((data) => {
+        console.log(data);
+        props.setFilms(
+          _.remove(props.films, function(n) {
+            return n._id !== id;
+          })
+        );
       })
       .catch((err) => {
         console.log(err);

@@ -82,8 +82,8 @@ app.get('/film/:id', (req, res) => {
     })
   })
 
-  app.post('/deleteFilm/:id', function (req, res) {
-    let id = req.params.id
+  app.post('/deleteFilm', function (req, res) {
+    let id = req.body._id
     film.deleteOne({_id:id},(err,doc)=>{
       if(doc !=null){
           if(!err){
