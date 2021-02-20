@@ -6,6 +6,7 @@ const { Meta } = Card;
 const Film = (props) => {
   return (
     <Card
+    key={props.id}
       hoverable
       style={{ width: 240 }}
       cover={

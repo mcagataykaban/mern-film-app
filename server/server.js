@@ -82,6 +82,23 @@ app.get('/film/:id', (req, res) => {
     })
   })
 
+  app.post('/deleteFilm/:id', function (req, res) {
+    let id = req.params.id
+    film.deleteOne({_id:id},(err,doc)=>{
+      if(doc !=null){
+          if(!err){
+              res.json(doc);
+          }
+          else{
+              res.json(err);
+          }
+      }
+      else{
+          res.status(404).json({"msg":"Silinecek ürün bulunamadı"});
+      }
+    })
+  })
+
 
 
 //   film.findById('602ed29f2120f40fc2cdaac5', (err,doc) => {
