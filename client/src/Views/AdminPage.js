@@ -1,23 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import { Table, Button, Popconfirm, message } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import _ from "lodash";
+import NewFilm from "../components/NewFilm";
 
 const AdminPage = (props) => {
+  const [isNewFilm, setisNewFilm] = useState(false);
   const text = "Are you sure to delete this task?";
-
+  const newFilmHandler = () => {
+    setisNewFilm(true);
+  };
   function confirm(id) {
-      
     console.log(id);
-    fetch('http://localhost:4000/deleteFilm', {
+    fetch("http://localhost:4000/deleteFilm", {
       method: "POST",
-      body: JSON.stringify({ _id : id}),
+      body: JSON.stringify({ _id: id }),
       headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        Accept: "application/json",
+        "Content-Type": "application/json",
       },
     })
-      .then((res) => {res.json()})
+      .then((res) => {
+        res.json();
+      })
       .then((data) => {
         console.log(data);
         props.setFilms(
@@ -31,11 +36,6 @@ const AdminPage = (props) => {
         message.info("Something went wrong");
       });
   }
-
-  const deleteFilm = (id) => {
-    //   setIsModalVisible(true)
-    // console.log(id);
-  };
 
   const columns = [
     {
@@ -69,7 +69,7 @@ const AdminPage = (props) => {
             okText="Yes"
             cancelText="No"
           >
-            <Button onClick={() => deleteFilm(_id)}>
+            <Button>
               <DeleteOutlined />
             </Button>
           </Popconfirm>
@@ -79,8 +79,17 @@ const AdminPage = (props) => {
   ];
   return (
     <div className="container">
-      <h5 className="mt-3">Films</h5>
-      <Table dataSource={props.films} columns={columns}></Table>
+      {isNewFilm === false ? (
+        <div>
+          <div className="d-flex justify-content-between m-3">
+            <h5>Films</h5>
+            <Button onClick={newFilmHandler} type="primary">
+              New Film
+            </Button>
+          </div>
+          <Table dataSource={props.films} columns={columns}></Table>
+        </div>
+      ) : <NewFilm setisNewFilm={setisNewFilm} />}
     </div>
   );
 };

@@ -19,16 +19,28 @@ const { Schema } = mongoose;
 
 const filmSchema = new Schema({
     name: String,
-    categories: [],
+    genres: [],
+    imgUrl: String,
     minutes: Number,
     publishedYear : Number,
     rate: Number
 })
 
+const genreSchema = new Schema({
+    name: String
+})
+
 const film = mongoose.model('film', filmSchema)
+const genre = mongoose.model('genre', genreSchema)
 
 app.get('/films', (req, res) => {
     film.find({}, (err,docs) => {
+        res.json(docs)
+    })
+})
+
+app.get('/genres', (req, res) => {
+    genre.find({}, (err,docs) => {
         res.json(docs)
     })
 })
@@ -47,9 +59,9 @@ app.get('/film/:id', (req, res) => {
   app.post('/addFilm', function (req, res) {
     let newFilm = new film({
         name: req.body.name,
-        publishedYear: req.body.publishedYear,
         minutes: req.body.minutes,
-        categories : req.body.categories
+        genres : req.body.genres,
+        imgUrl : req.body.imgUrl
     })
     newFilm.save((err,doc)=>{
         if (!err) {
@@ -107,8 +119,33 @@ app.get('/film/:id', (req, res) => {
 //     doc.save()
 // })
 
-
-
+// "genres": [
+//     "Comedy",
+//     "Fantasy",
+//     "Crime",
+//     "Drama",
+//     "Music",
+//     "Adventure",
+//     "History",
+//     "Thriller",
+//     "Animation",
+//     "Family",
+//     "Mystery",
+//     "Biography",
+//     "Action",
+//     "Film-Noir",
+//     "Romance",
+//     "Sci-Fi",
+//     "War",
+//     "Western",
+//     "Horror",
+//     "Musical",
+//     "Sport"
+// ],
+// var newGenre = new genre({
+//     name: 'Sport'
+// })
+// newGenre.save()
 // var newFilm = new film({
 //     name: 'Spider-man Home Coming',
 //     publishedDate: 2017,
