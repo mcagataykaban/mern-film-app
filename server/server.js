@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const express = require('express')
 var cors = require('cors')
 const app = express()
-const port = 4000
+const port = process.env.PORT || 4000
 var bodyParser = require('body-parser')
 const { forEach } = require('methods')
 
