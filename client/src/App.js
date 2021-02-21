@@ -16,7 +16,7 @@ function App() {
   }, []);
   return (
     <BrowserRouter>
-      <Layout style={{height: '100vh'}} className="layout">
+      <Layout style={{minHeight: '100vh'}} className="layout">
         <Header>
           <div className="logo" />
           <Menu theme="dark" mode="horizontal">

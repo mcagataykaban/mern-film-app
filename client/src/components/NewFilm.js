@@ -1,21 +1,24 @@
 import React, { useState, useEffect } from "react";
-import { Form, Input, Button, InputNumber,Checkbox, Row, Col } from "antd";
+import { Form, Input, Button, InputNumber, Checkbox, Row, Col } from "antd";
 import { RollbackOutlined } from "@ant-design/icons";
 import _ from "lodash";
-import { Rate } from 'antd';
-
+import { Rate } from "antd";
+import { Redirect } from "react-router-dom";
 
 const NewFilm = (props) => {
   const [genres, setGenres] = useState([]);
 
+  const re = /^[0-9\b]+$/;
+
+
   const [name, setName] = useState("");
   const [imgUrl, setImgUrl] = useState("");
   const [formGenres, setFormGenres] = useState([]);
-  const [minutes, setMinutes] = useState(0)
-  const [rate, setRate] = useState(0)
+  const [minutes, setMinutes] = useState(0);
+  const [rate, setRate] = useState(0);
   const formSubmitHandler = (e) => {
     e.preventDefault();
-    
+
     fetch("http://localhost:4000/addFilm", {
       method: "post",
       body: JSON.stringify({
@@ -23,15 +26,18 @@ const NewFilm = (props) => {
         minutes: minutes,
         genres: formGenres,
         imgUrl: imgUrl,
-        rate: rate
+        rate: rate,
       }),
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
     })
-    .then(res => res.json())
-    .then(data => props.setFilms([...props.films, data]));
+      .then((res) => res.json())
+      .then((data) => {
+        props.setFilms([...props.films, data])
+        props.setisNewFilm(false)
+      });
   };
   const nameInputHandler = (e) => {
     setName(e.target.value);
@@ -40,12 +46,15 @@ const NewFilm = (props) => {
     setImgUrl(e.target.value);
   };
   const minInputHandler = (e) => {
-      console.log(e.target.value);
-    setMinutes(e.target.value);
+    if (re.test(e.target.value)) {
+      setMinutes(e.target.value);
+    }
   };
-  const rateInputHandler = (e) =>{
-    setRate(e.target.value)
-  }
+  const rateInputHandler = (e) => {
+    if (re.test(e.target.value)) {
+      setRate(e.target.value);
+    }
+  };
   const genreInputHandler = (isChecked, _id) => {
     if (isChecked) {
       setFormGenres([...formGenres, _id]);
@@ -63,6 +72,7 @@ const NewFilm = (props) => {
       .then((res) => res.json())
       .then((data) => setGenres(data));
   }, []);
+
 
   return (
     <div className="container">
@@ -107,10 +117,14 @@ const NewFilm = (props) => {
             </Row>
           </Checkbox.Group>
         </Form.Item>
-        <Form.Item label="Rate">
-              <input value={rate} onChange={rateInputHandler} />
-        </Form.Item>
-        <button onClick={formSubmitHandler}>Submit</button>
+        <div className="d-flex justify-content-between">
+          <Form.Item label="Rate">
+            <input value={rate} onChange={rateInputHandler} />
+          </Form.Item>
+          <Button type="primary" onClick={formSubmitHandler}>
+            Submit
+          </Button>
+        </div>
       </Form>
     </div>
   );
