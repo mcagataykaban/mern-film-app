@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Form, Input, Button, InputNumber, Checkbox, Row, Col } from "antd";
+import { Form, Input, Button, InputNumber,Checkbox, Row, Col } from "antd";
 import { RollbackOutlined } from "@ant-design/icons";
 import _ from "lodash";
+import { Rate } from 'antd';
+
 
 const NewFilm = (props) => {
   const [genres, setGenres] = useState([]);
@@ -9,10 +11,11 @@ const NewFilm = (props) => {
   const [name, setName] = useState("");
   const [imgUrl, setImgUrl] = useState("");
   const [formGenres, setFormGenres] = useState([]);
-  const [minutes, setMinutes] = useState(0);
+  const [minutes, setMinutes] = useState(0)
+  const [rate, setRate] = useState(0)
   const formSubmitHandler = (e) => {
     e.preventDefault();
-
+    
     fetch("http://localhost:4000/addFilm", {
       method: "post",
       body: JSON.stringify({
@@ -20,6 +23,7 @@ const NewFilm = (props) => {
         minutes: minutes,
         genres: formGenres,
         imgUrl: imgUrl,
+        rate: rate
       }),
       headers: {
         Accept: "application/json",
@@ -27,7 +31,7 @@ const NewFilm = (props) => {
       },
     })
     .then(res => res.json())
-    .then(data => console.log(data));
+    .then(data => props.setFilms([...props.films, data]));
   };
   const nameInputHandler = (e) => {
     setName(e.target.value);
@@ -39,6 +43,9 @@ const NewFilm = (props) => {
       console.log(e.target.value);
     setMinutes(e.target.value);
   };
+  const rateInputHandler = (e) =>{
+    setRate(e.target.value)
+  }
   const genreInputHandler = (isChecked, _id) => {
     if (isChecked) {
       setFormGenres([...formGenres, _id]);
@@ -99,6 +106,9 @@ const NewFilm = (props) => {
               })}
             </Row>
           </Checkbox.Group>
+        </Form.Item>
+        <Form.Item label="Rate">
+              <input value={rate} onChange={rateInputHandler} />
         </Form.Item>
         <button onClick={formSubmitHandler}>Submit</button>
       </Form>

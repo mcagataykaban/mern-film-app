@@ -61,7 +61,8 @@ app.get('/film/:id', (req, res) => {
         name: req.body.name,
         minutes: req.body.minutes,
         genres : req.body.genres,
-        imgUrl : req.body.imgUrl
+        imgUrl : req.body.imgUrl,
+        rate : req.body.rate
     })
     newFilm.save((err,doc)=>{
         if (!err) {

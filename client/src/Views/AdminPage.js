@@ -89,7 +89,7 @@ const AdminPage = (props) => {
           </div>
           <Table dataSource={props.films} columns={columns}></Table>
         </div>
-      ) : <NewFilm setisNewFilm={setisNewFilm} />}
+      ) : <NewFilm films={props.films} setFilms={props.setFilms} setisNewFilm={setisNewFilm} />}
     </div>
   );
 };
